@@ -1,0 +1,44 @@
+name: sasApp
+services:
+  sasApp-db:
+    image: mariadb:11.3.2
+    container_name: sasApp-db
+    environment:
+      MARIADB_DATABASE: sasApp_database
+      MARIADB_USER: sasApp_user
+      MARIADB_PASSWORD: sasApp_password
+      MARIADB_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: [ CMD, healthcheck.sh, --connect, --innodb_initialized ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - network-sasApp
+
+  sasApp-api:
+    image: sas-app-api
+    container_name: sas-app-api
+    ports:
+      - "8086:8086"
+    depends_on:
+      sasApp-db:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_JSON: '{
+      "spring.application.name": "sasApp",
+      "server.port": "8086",
+      "spring.jpa.hibernate.ddl-auto": "update",
+      "spring.jpa.properties.hibernate.globally_quoted_identifiers":"true",
+      "spring.datasource.url": "jdbc:mariadb://sasApp-db:3306/sasApp_database",
+      "spring.datasource.username": "sasApp_user",
+      "spring.datasource.password": "sasApp_password",
+      "spring.jpa.database-platform": "org.hibernate.dialect.MariaDBDialect"
+      }'
+    networks:
+      - network-sasApp
+networks:
+  network-sasApp:
+    driver: bridge

@@ -38,12 +38,13 @@ public class UserController {
     @PostMapping("/auth/register")
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterInDto registerInDto) {
          authService.register(registerInDto);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/auth/login")
     public ResponseEntity<AuthOutDto> authenticate(@RequestBody LoginInDto request) throws UserNotFoundException {
-        return ResponseEntity.ok(authService.login(request));
+        AuthOutDto authOutDto =  authService.login(request);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(authOutDto);
     }
 
     @GetMapping("/v1/users")
@@ -84,7 +85,7 @@ public class UserController {
 
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(GrantNotFoundException gnfe) {
+    public ResponseEntity<ErrorResponse> handleException(UserNotFoundException gnfe) {
         ErrorResponse errorResponse = ErrorResponse.notFound("The user does not exist");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }

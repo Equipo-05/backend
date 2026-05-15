@@ -1,13 +1,12 @@
 package com.svalero.equipo5.auth.service;
 
 
-import com.svalero.equipo5.model.User;
+import com.svalero.equipo5.domain.User;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;

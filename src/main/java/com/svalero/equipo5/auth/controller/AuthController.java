@@ -1,3 +1,4 @@
+
 package com.svalero.equipo5.auth.controller;
 
 import com.svalero.equipo5.auth.service.AuthService;
@@ -35,3 +36,4 @@ public class AuthController {
 
 
 }
+

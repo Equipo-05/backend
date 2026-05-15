@@ -1,0 +1,13 @@
+name: sasApp
+services:
+  db:
+    image: mariadb:11.3.2
+    container_name: sasApp-db
+    environment:
+      MARIADB_DATABASE: $MYSQL_DATABASE
+      MARIADB_USER: $MYSQL_USER
+      MARIADB_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    ports:
+      - "3307:3306"
+

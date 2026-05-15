@@ -1,6 +1,8 @@
 package com.svalero.equipo5.service;
 
 import com.svalero.equipo5.domain.User;
+import com.svalero.equipo5.dto.in.RegisterInDto;
+import com.svalero.equipo5.dto.out.UserOutDto;
 import com.svalero.equipo5.exception.UserNotFoundException;
 import com.svalero.equipo5.repository.GrantRepository;
 import com.svalero.equipo5.domain.Grant;
@@ -9,6 +11,7 @@ import com.svalero.equipo5.exception.GrantNotFoundException;
 import com.svalero.equipo5.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +23,17 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public List<UserOutDto> findAllV2() {
+        List<User> users = userRepository.findAll();
+        List<UserOutDto> useroutDtos = users.stream().map(user -> modelMapper.map(user, UserOutDto.class)).toList();
+        return useroutDtos;
     }
 
 
@@ -31,14 +42,21 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    public UserOutDto findUserByIdV2(long id) throws UserNotFoundException {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        UserOutDto  userOutDto = modelMapper.map(user, UserOutDto.class);
+        return userOutDto;
+    }
 
 
-    public User modifyUser(long id, User user) throws UserNotFoundException {
+
+    public User modifyUser(long id, RegisterInDto user) throws UserNotFoundException {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
         modelMapper.map(user, existingUser);
         existingUser.setId(id);
+        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         return  userRepository.save(existingUser);
     }
 

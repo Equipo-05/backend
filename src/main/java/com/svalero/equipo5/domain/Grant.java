@@ -27,12 +27,12 @@ public class Grant {
     private int vacancies;
     @Column
     private boolean available=true;
-    @Column(name = "internal_code")
+    @Column(name = "internal_code", unique = true)
     private String internalCode;
     @Column(name = "created_at")
     private LocalDate createdAt=LocalDate.now();
 
-    @OneToMany(mappedBy = "grant")
+    @OneToMany(mappedBy = "grant",cascade = CascadeType.ALL)
     private List<Request> grantRequests;
 
 }

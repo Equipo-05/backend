@@ -5,6 +5,7 @@ import com.svalero.equipo5.service.GrantService;
 import com.svalero.equipo5.domain.Grant;
 import com.svalero.equipo5.dto.in.GrantInDto;
 import com.svalero.equipo5.exception.GrantNotFoundException;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class GrantController {
     }
 
     @PostMapping("/grants")
-    public ResponseEntity<Grant> addGrant(@RequestBody GrantInDto grantInDto) {
+    public ResponseEntity<Grant> addGrant(@Valid @RequestBody GrantInDto grantInDto) {
         Grant newGrant = grantService.addGrant(grantInDto);
         return new ResponseEntity<>(newGrant, HttpStatus.CREATED);
     }

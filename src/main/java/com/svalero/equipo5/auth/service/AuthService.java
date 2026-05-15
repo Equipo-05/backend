@@ -6,7 +6,7 @@ import com.svalero.equipo5.auth.repository.TokenRepository;
 import com.svalero.equipo5.dto.in.LoginInDto;
 import com.svalero.equipo5.dto.in.RegisterInDto;
 import com.svalero.equipo5.dto.out.AuthOutDto;
-import com.svalero.equipo5.model.User;
+import com.svalero.equipo5.domain.User;
 import com.svalero.equipo5.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,7 @@ public class AuthService {
     public TokenResponse register(RegisterInDto registerInDto) throws Exception {
         User user = User.builder()
                 .name(registerInDto.getName())
+                .lastName(registerInDto.getLastName())
                 .password(passwordEncoder.encode(registerInDto.getPassword()))
                 .email(registerInDto.getEmail())
                 .phone(registerInDto.getPhone())

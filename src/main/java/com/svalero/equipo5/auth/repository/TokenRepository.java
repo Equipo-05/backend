@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface TokenRepository extends CrudRepository<Token, Long>, JpaSpecificationExecutor<Token> {
    List<Token> findAllValidIsFalseOrRevokedIsFalseByUserId(long userId);
+
+   Token findByToken(String jwtToken);
 }

@@ -21,7 +21,7 @@ public class Grant {
     private String name;
     @Column
     private String type;
-    @Column
+    @Column(length = 1000)
     private String description;
     @Column
     private int vacancies;

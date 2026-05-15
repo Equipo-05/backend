@@ -36,9 +36,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<TokenResponse> register(@Valid @RequestBody RegisterInDto registerInDto) {
-        TokenResponse token = authService.register(registerInDto);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<Void> register(@Valid @RequestBody RegisterInDto registerInDto) {
+         authService.register(registerInDto);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/auth/login")

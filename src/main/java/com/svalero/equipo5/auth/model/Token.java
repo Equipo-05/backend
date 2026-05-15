@@ -1,5 +1,6 @@
 package com.svalero.equipo5.auth.model;
 
+import com.svalero.equipo5.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ public class Token {
     private String token;
 
     @Enumerated(EnumType.STRING)
-    private TokenType tokenType =  TokenType.BEARER;
+    private TokenType type =  TokenType.BEARER;
 
     public boolean revoked;
 

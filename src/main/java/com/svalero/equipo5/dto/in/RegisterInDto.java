@@ -18,6 +18,4 @@ public class RegisterInDto {
     private LocalDate birthDate;
     private boolean active;
     private Float annualSalary;
-    private long grants_id;
-
 }

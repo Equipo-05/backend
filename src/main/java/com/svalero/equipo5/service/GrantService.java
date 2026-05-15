@@ -1,5 +1,6 @@
 package com.svalero.equipo5.service;
 
+import com.svalero.equipo5.dto.in.GrantModifyInDto;
 import com.svalero.equipo5.repository.GrantRepository;
 import com.svalero.equipo5.domain.Grant;
 import com.svalero.equipo5.dto.in.GrantInDto;
@@ -36,11 +37,11 @@ public class GrantService {
         return grantRepository.save(grant);
     }
 
-    public Grant modifyGrant(long id, Grant grant) throws GrantNotFoundException {
+    public Grant modifyGrant(long id, GrantModifyInDto grantModifyInDto) throws GrantNotFoundException {
         Grant existingGrant = grantRepository.findById(id)
                 .orElseThrow(GrantNotFoundException::new);
 
-        modelMapper.map(grant, existingGrant);
+        modelMapper.map(grantModifyInDto, existingGrant);
         existingGrant.setId(id);
         return  grantRepository.save(existingGrant);
     }

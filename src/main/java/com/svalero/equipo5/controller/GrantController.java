@@ -20,13 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class GrantController {
 
     @Autowired
     private GrantService grantService;
-    @Autowired
-    private ModelMapper modelMapper;
+
 
     @GetMapping("/grants")
     public ResponseEntity<List<Grant>> getAllGrants() {

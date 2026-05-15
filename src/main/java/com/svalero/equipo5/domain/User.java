@@ -20,17 +20,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "users")
-@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column
+    @Column(unique = true)
     private String dni;
     @Column
     private String password;
-    @Column
+    @Column(unique = true)
     private String email;
     @Column
     private String name;
@@ -47,11 +46,7 @@ public class User implements UserDetails {
     @Column(name = "annual_salary")
     private Float annualSalary;
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    private LocalDateTime createdAt =  LocalDateTime.now();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,7 +58,7 @@ public class User implements UserDetails {
         return dni;
     }
 
-   @OneToMany(mappedBy = "user")
+   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
    private List<Request> grantRequests;
 
 

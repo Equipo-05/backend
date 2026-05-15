@@ -34,7 +34,7 @@ public class AuthService {
     @Autowired
     private final UserRepository userRepository;
 
-    public TokenResponse register(RegisterInDto registerInDto) throws Exception {
+    public TokenResponse register(RegisterInDto registerInDto) {
         User user = User.builder()
                 .name(registerInDto.getName())
                 .lastName(registerInDto.getLastName())

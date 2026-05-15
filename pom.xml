@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.svalero</groupId>
-	<artifactId>equipo5</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name/>
+    <artifactId>sasApp</artifactId>
+    <version>0.1</version>
+    <name>sasApp</name>
 	<description/>
 	<url/>
 	<licenses>

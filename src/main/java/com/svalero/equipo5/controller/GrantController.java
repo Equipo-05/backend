@@ -1,5 +1,6 @@
 package com.svalero.equipo5.controller;
 
+import com.svalero.equipo5.dto.in.GrantModifyInDto;
 import com.svalero.equipo5.exception.ErrorResponse;
 import com.svalero.equipo5.service.GrantService;
 import com.svalero.equipo5.domain.Grant;
@@ -28,7 +29,7 @@ public class GrantController {
     private ModelMapper modelMapper;
 
     @GetMapping("/grants")
-    public ResponseEntity<List<Grant>> getAll() {
+    public ResponseEntity<List<Grant>> getAllGrants() {
         List<Grant> allGrants = grantService.findAll();
         return ResponseEntity.ok(allGrants);
     }
@@ -45,13 +46,13 @@ public class GrantController {
         return new ResponseEntity<>(newGrant, HttpStatus.CREATED);
     }
 
-    @PutMapping("/grants")
-    public ResponseEntity<Grant> modifyGrant(@PathVariable long id, @RequestBody Grant grant) throws GrantNotFoundException {
-        Grant newGrant = grantService.modifyGrant(id, grant);
+    @PutMapping("/grants/{id}")
+    public ResponseEntity<Grant> modifyGrant(@PathVariable long id, @RequestBody GrantModifyInDto grantModifyInDto) throws GrantNotFoundException {
+        Grant newGrant = grantService.modifyGrant(id, grantModifyInDto);
         return ResponseEntity.ok(newGrant);
     }
 
-    @DeleteMapping("/grants")
+    @DeleteMapping("/grants/{id}")
     public ResponseEntity<Void> deleteGrant(@PathVariable long id) throws GrantNotFoundException {
         grantService.deleteGrant(id);
         return ResponseEntity.noContent().build();

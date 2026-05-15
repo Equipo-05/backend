@@ -63,8 +63,8 @@ public class User implements UserDetails {
         return dni;
     }
 
-//    @OneToMany(mappedBy = "user")
-//    private List<GrantRequest> grantRequests;
+   @OneToMany(mappedBy = "user")
+   private List<Request> grantRequests;
 
 
 

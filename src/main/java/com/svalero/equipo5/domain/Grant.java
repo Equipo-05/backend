@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -30,4 +31,8 @@ public class Grant {
     private String internalCode;
     @Column(name = "created_at")
     private LocalDate createdAt=LocalDate.now();
+
+    @OneToMany(mappedBy = "grant")
+    private List<Request> grantRequests;
+
 }

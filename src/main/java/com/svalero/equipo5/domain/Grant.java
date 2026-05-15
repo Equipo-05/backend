@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "grant")
-public class Grants {
+public class Grant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +25,9 @@ public class Grants {
     @Column
     private int vacancies;
     @Column
-    private boolean available;
+    private boolean available=true;
     @Column(name = "internal_code")
     private String internalCode;
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDate createdAt=LocalDate.now();
 }

@@ -1,4 +1,4 @@
-package com.svalero.equipo5.auth.service;
+package com.svalero.equipo5.service;
 
 
 import com.svalero.equipo5.domain.User;

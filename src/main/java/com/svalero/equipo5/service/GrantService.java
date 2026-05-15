@@ -1,6 +1,6 @@
-package com.svalero.equipo5.auth.service;
+package com.svalero.equipo5.service;
 
-import com.svalero.equipo5.auth.repository.GrantRepository;
+import com.svalero.equipo5.repository.GrantRepository;
 import com.svalero.equipo5.domain.Grant;
 import com.svalero.equipo5.dto.in.GrantInDto;
 import com.svalero.equipo5.exception.GrantNotFoundException;

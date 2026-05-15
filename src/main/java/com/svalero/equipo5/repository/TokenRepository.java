@@ -1,6 +1,6 @@
-package com.svalero.equipo5.auth.repository;
+package com.svalero.equipo5.repository;
 
-import com.svalero.equipo5.auth.model.Token;
+import com.svalero.equipo5.domain.Token;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 

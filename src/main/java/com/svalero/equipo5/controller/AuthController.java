@@ -1,7 +1,7 @@
 
-package com.svalero.equipo5.auth.controller;
+package com.svalero.equipo5.controller;
 
-import com.svalero.equipo5.auth.service.AuthService;
+import com.svalero.equipo5.service.AuthService;
 import com.svalero.equipo5.dto.in.LoginInDto;
 import com.svalero.equipo5.dto.in.RegisterInDto;
 import com.svalero.equipo5.dto.out.AuthOutDto;

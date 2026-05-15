@@ -1,4 +1,4 @@
-package com.svalero.equipo5.auth.controller;
+package com.svalero.equipo5.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

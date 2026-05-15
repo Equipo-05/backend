@@ -1,6 +1,5 @@
-package com.svalero.equipo5.auth.model;
+package com.svalero.equipo5.domain;
 
-import com.svalero.equipo5.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
 package com.svalero.equipo5.config;
 
-import com.svalero.equipo5.auth.model.Token;
-import com.svalero.equipo5.auth.repository.TokenRepository;
-import com.svalero.equipo5.auth.service.JwtService;
+import com.svalero.equipo5.domain.Token;
+import com.svalero.equipo5.repository.TokenRepository;
+import com.svalero.equipo5.service.JwtService;
 import com.svalero.equipo5.domain.User;
 import com.svalero.equipo5.repository.UserRepository;
 import jakarta.servlet.FilterChain;

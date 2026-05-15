@@ -1,8 +1,8 @@
-package com.svalero.equipo5.auth.service;
+package com.svalero.equipo5.service;
 
-import com.svalero.equipo5.auth.controller.TokenResponse;
-import com.svalero.equipo5.auth.model.Token;
-import com.svalero.equipo5.auth.repository.TokenRepository;
+import com.svalero.equipo5.controller.TokenResponse;
+import com.svalero.equipo5.domain.Token;
+import com.svalero.equipo5.repository.TokenRepository;
 import com.svalero.equipo5.dto.in.LoginInDto;
 import com.svalero.equipo5.dto.in.RegisterInDto;
 import com.svalero.equipo5.dto.out.AuthOutDto;

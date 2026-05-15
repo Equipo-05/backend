@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -68,6 +69,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,   "/api/grants/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT,    "/api/grants/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,  "/api/grants/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/grants/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,   "/api/v1/requests/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT,    "/api/v1/requests/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,  "/api/v1/requests/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/requests/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,   "/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT,    "/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,  "/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").permitAll()
 
                         .anyRequest().authenticated()
                 )

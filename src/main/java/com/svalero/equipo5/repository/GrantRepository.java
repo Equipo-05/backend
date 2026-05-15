@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface GrantRepository extends CrudRepository<Grant, Long> {
     List<Grant> findAll();
+
 }

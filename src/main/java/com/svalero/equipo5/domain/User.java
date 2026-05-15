@@ -61,6 +61,8 @@ public class User implements UserDetails {
    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
    private List<Request> grantRequests;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Token> tokens;
 
 
 }

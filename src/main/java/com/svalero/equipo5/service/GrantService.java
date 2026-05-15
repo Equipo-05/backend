@@ -51,4 +51,11 @@ public class GrantService {
                 .orElseThrow(GrantNotFoundException::new);
         grantRepository.delete(grant);
     }
+
+    public void deleteGrantV2(long id) throws GrantNotFoundException {
+        Grant grant = grantRepository.findById(id)
+                .orElseThrow(GrantNotFoundException::new);
+        grant.setAvailable(false);
+        grantRepository.save(grant);
+    }
 }

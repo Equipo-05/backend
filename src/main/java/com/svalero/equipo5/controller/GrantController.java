@@ -20,40 +20,46 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class GrantController {
 
     @Autowired
     private GrantService grantService;
 
 
-    @GetMapping("/grants")
+    @GetMapping("/v1/grants")
     public ResponseEntity<List<Grant>> getAllGrants() {
         List<Grant> allGrants = grantService.findAll();
         return ResponseEntity.ok(allGrants);
     }
 
-    @GetMapping("/grants/{id}")
+    @GetMapping("/v1/grants/{id}")
     public ResponseEntity<Grant> getGrantById(@PathVariable long id) throws GrantNotFoundException {
         Grant grant = grantService.findGrantById(id);
         return  ResponseEntity.ok(grant);
     }
 
-    @PostMapping("/grants")
+    @PostMapping("/v1/grants")
     public ResponseEntity<Grant> addGrant(@Valid @RequestBody GrantInDto grantInDto) {
         Grant newGrant = grantService.addGrant(grantInDto);
         return new ResponseEntity<>(newGrant, HttpStatus.CREATED);
     }
 
-    @PutMapping("/grants/{id}")
+    @PutMapping("/v1/grants/{id}")
     public ResponseEntity<Grant> modifyGrant(@PathVariable long id, @RequestBody GrantModifyInDto grantModifyInDto) throws GrantNotFoundException {
         Grant newGrant = grantService.modifyGrant(id, grantModifyInDto);
         return ResponseEntity.ok(newGrant);
     }
 
-    @DeleteMapping("/grants/{id}")
+    @DeleteMapping("/v1/grants/{id}")
     public ResponseEntity<Void> deleteGrant(@PathVariable long id) throws GrantNotFoundException {
         grantService.deleteGrant(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/v2/grants/{id}")
+    public ResponseEntity<Void> deleteGrantV2(@PathVariable long id) throws GrantNotFoundException {
+        grantService.deleteGrantV2(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,6 +1,6 @@
 package com.svalero.equipo5.service;
 
-import com.svalero.equipo5.controller.TokenResponse;
+
 import com.svalero.equipo5.domain.Token;
 import com.svalero.equipo5.repository.TokenRepository;
 import com.svalero.equipo5.dto.in.LoginInDto;
@@ -34,7 +34,7 @@ public class AuthService {
     @Autowired
     private final UserRepository userRepository;
 
-    public TokenResponse register(RegisterInDto registerInDto) {
+    public void register(RegisterInDto registerInDto) {
         User user = User.builder()
                 .name(registerInDto.getName())
                 .lastName(registerInDto.getLastName())
@@ -50,7 +50,6 @@ public class AuthService {
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
-        return new TokenResponse(jwtToken);
     }
     private void saveUserToken(User user, String jwtToken) {
         Token token = Token.builder()

@@ -47,7 +47,8 @@ public class User implements UserDetails {
     @Column(name = "annual_salary")
     private Float annualSalary;
     @Column(name = "created_at")
-    private LocalDateTime createdAt =  LocalDateTime.now();
+    private LocalDateTime createdAt;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

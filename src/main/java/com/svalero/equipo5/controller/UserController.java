@@ -5,6 +5,7 @@ import com.svalero.equipo5.domain.User;
 import com.svalero.equipo5.dto.out.UserOutDto;
 import com.svalero.equipo5.exception.ErrorResponse;
 import com.svalero.equipo5.exception.GrantNotFoundException;
+import com.svalero.equipo5.exception.UserDisabledException;
 import com.svalero.equipo5.exception.UserNotFoundException;
 import com.svalero.equipo5.service.AuthService;
 import com.svalero.equipo5.dto.in.LoginInDto;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<AuthOutDto> authenticate(@Valid @RequestBody LoginInDto request) throws UserNotFoundException {
+    public ResponseEntity<AuthOutDto> authenticate(@Valid @RequestBody LoginInDto request) throws UserNotFoundException, UserDisabledException {
         AuthOutDto authOutDto =  authService.login(request);
         return  ResponseEntity.status(HttpStatus.CREATED).body(authOutDto);
     }
@@ -86,10 +88,17 @@ public class UserController {
 
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(UserNotFoundException gnfe) {
+    public ResponseEntity<ErrorResponse> handleException(UserNotFoundException unfe) {
         ErrorResponse errorResponse = ErrorResponse.notFound("The user does not exist");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserDisabledException.class)
+    public ResponseEntity<ErrorResponse> handleException(UserDisabledException ude) {
+        ErrorResponse errorResponse = ErrorResponse.generalError(403,"forbidden","The user is disabled. Contact with support");
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleException(MethodArgumentNotValidException manve) {

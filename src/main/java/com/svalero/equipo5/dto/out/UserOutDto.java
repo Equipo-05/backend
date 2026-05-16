@@ -23,6 +23,7 @@ public class UserOutDto {
     private String phone;
     private LocalDate birthDate;
     private Float annualSalary;
+    private boolean active;
 
     @JsonBackReference
     private List<Request> grantRequests;

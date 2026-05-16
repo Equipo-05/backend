@@ -58,6 +58,7 @@ public class UserService {
 
         modelMapper.map(user, existingUser);
         existingUser.setId(id);
+        existingUser.setActive(user.isActive());
 
         if (user.getPassword() != null && !user.getPassword().isBlank()) {
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));

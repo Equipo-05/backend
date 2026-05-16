@@ -13,7 +13,7 @@ public class RegisterInDto {
     @Pattern(regexp = "^[0-9]{8}[ABCDEFGHIJKLMNOPQRSTUVWXYZ]$",
             message = "Invalid DNI format")
     private String dni;
-    @NotBlank(message = "Password is mandatory")
+    //@NotBlank(message = "Password is mandatory")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$",
             message = "Password must be 8+ characters + a/A + number + symbol")
     private String password;
@@ -46,4 +46,6 @@ public class RegisterInDto {
 
     @PositiveOrZero(message = "Annual salary must be positive")
     private Float annualSalary;
+
+
 }

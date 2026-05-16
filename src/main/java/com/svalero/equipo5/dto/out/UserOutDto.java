@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserOutDto {
 
+    private long id;
     private String email;
     private String name;
     private String lastName;

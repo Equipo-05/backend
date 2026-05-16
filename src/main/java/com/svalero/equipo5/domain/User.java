@@ -1,5 +1,6 @@
 package com.svalero.equipo5.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,9 +60,11 @@ public class User implements UserDetails {
     }
 
    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+   @JsonBackReference
    private List<Request> grantRequests;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Token> tokens;
 
 

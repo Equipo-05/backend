@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PutMapping("/v1/user/{id}")
-    public ResponseEntity<User> modifyUser(@PathVariable long id, @RequestBody RegisterInDto user) throws UserNotFoundException {
+    public ResponseEntity<User> modifyUser(@PathVariable long id,@Valid @RequestBody RegisterInDto user) throws UserNotFoundException {
         User newUser = userService.modifyUser(id, user);
         return ResponseEntity.ok(newUser);
     }

@@ -46,7 +46,7 @@ public class GrantController {
     }
 
     @PutMapping("/v1/grants/{id}")
-    public ResponseEntity<Grant> modifyGrant(@PathVariable long id, @RequestBody GrantModifyInDto grantModifyInDto) throws GrantNotFoundException {
+    public ResponseEntity<Grant> modifyGrant(@PathVariable long id, @Valid @RequestBody GrantModifyInDto grantModifyInDto) throws GrantNotFoundException {
         Grant newGrant = grantService.modifyGrant(id, grantModifyInDto);
         return ResponseEntity.ok(newGrant);
     }

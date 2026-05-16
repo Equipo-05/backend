@@ -2,6 +2,7 @@ package com.svalero.equipo5.service;
 
 
 import com.svalero.equipo5.domain.Token;
+import com.svalero.equipo5.exception.UserNotFoundException;
 import com.svalero.equipo5.repository.TokenRepository;
 import com.svalero.equipo5.dto.in.LoginInDto;
 import com.svalero.equipo5.dto.in.RegisterInDto;
@@ -64,18 +65,22 @@ public class AuthService {
         tokenRepository.save(token);
     }
 
-    public AuthOutDto login(LoginInDto loginInDto)  {
+    public AuthOutDto login(LoginInDto loginInDto) throws UserNotFoundException {
 
+        User user = userRepository.findByDni(loginInDto.getDni());
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        if (!user.isActive()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cuenta desactivada. Contacta con el administrador.");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginInDto.getDni(),
                         loginInDto.getPassword()
                 )
         );
-        User user = userRepository.findByDni(loginInDto.getDni());
-        if (!user.isActive()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cuenta desactivada. Contacta con el administrador.");
-        }
+
         String jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);

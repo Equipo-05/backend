@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<AuthOutDto> authenticate(@RequestBody LoginInDto request) throws UserNotFoundException {
+    public ResponseEntity<AuthOutDto> authenticate(@Valid @RequestBody LoginInDto request) throws UserNotFoundException {
         AuthOutDto authOutDto =  authService.login(request);
         return  ResponseEntity.status(HttpStatus.CREATED).body(authOutDto);
     }
@@ -107,6 +108,15 @@ public class UserController {
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         ErrorResponse errorResponse = ErrorResponse.internalServerError();
         return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException bce) {
+        ErrorResponse errorResponse = ErrorResponse.generalError(
+                401,
+                "bad-credentials",
+                "DNI or Password not correct"
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 }
 

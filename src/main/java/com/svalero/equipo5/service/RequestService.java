@@ -5,6 +5,7 @@ import com.svalero.equipo5.domain.Request;
 import com.svalero.equipo5.domain.User;
 import com.svalero.equipo5.dto.out.RequestOutDto;
 import com.svalero.equipo5.exception.GrantNotFoundException;
+import com.svalero.equipo5.exception.RequestNotFoundException;
 import com.svalero.equipo5.repository.GrantRepository;
 import com.svalero.equipo5.repository.RequestRepository;
 import com.svalero.equipo5.repository.UserRepository;
@@ -78,9 +79,9 @@ public class RequestService {
         requestRepository.deleteById(requestId);
     }
 
-    public RequestOutDto updateStatus(long requestId, Request.Status newStatus) {
+    public RequestOutDto updateStatus(long requestId, Request.Status newStatus) throws RequestNotFoundException {
         Request request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(RequestNotFoundException::new);
 
         request.setStatus(newStatus);
         if (newStatus != Request.Status.PENDING) {

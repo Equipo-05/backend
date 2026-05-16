@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RequestRepository extends CrudRepository<Request, Long>, JpaSpecificationExecutor<Request> {
+    List<Request> findByUserId(long userId);
     List<Request> findAll();
 }

@@ -1,5 +1,6 @@
 package com.svalero.equipo5.controller;
 
+import com.svalero.equipo5.domain.Request;
 import com.svalero.equipo5.dto.out.RequestOutDto;
 import com.svalero.equipo5.exception.GrantNotFoundException;
 import com.svalero.equipo5.service.RequestService;
@@ -30,5 +31,10 @@ public class RequestController {
     @GetMapping("/v1/requests/mine")
     public ResponseEntity<List<RequestOutDto>> getMyRequests() {
         return ResponseEntity.ok(requestService.getMyRequests());
+    }
+
+    @PutMapping("/v1/requests/{id}/status")
+    public ResponseEntity<RequestOutDto> updateStatus(@PathVariable long id, @RequestParam Request.Status status) {
+        return ResponseEntity.ok(requestService.updateStatus(id, status));
     }
 }

@@ -5,7 +5,6 @@ import com.svalero.equipo5.domain.Request;
 import com.svalero.equipo5.domain.User;
 import com.svalero.equipo5.dto.out.RequestOutDto;
 import com.svalero.equipo5.exception.GrantNotFoundException;
-import com.svalero.equipo5.exception.UserNotFoundException;
 import com.svalero.equipo5.repository.GrantRepository;
 import com.svalero.equipo5.repository.RequestRepository;
 import com.svalero.equipo5.repository.UserRepository;
@@ -29,8 +28,7 @@ public class RequestService {
     @Autowired
     private RequestRepository requestRepository;
 
-
-    public RequestOutDto create(long grantId ) throws GrantNotFoundException {
+    public RequestOutDto create(long grantId) throws GrantNotFoundException {
         User user = getAuthenticatedUser();
         Grant grant = grantRepository.findById(grantId).orElseThrow(GrantNotFoundException::new);
 
@@ -42,7 +40,7 @@ public class RequestService {
         return toDto(savedRequest);
     }
 
-    public RequestOutDto toDto (Request req){
+    public RequestOutDto toDto(Request req) {
         RequestOutDto dto = new RequestOutDto();
         dto.setId(req.getId());
         dto.setUserId(req.getUser().getId());
@@ -52,7 +50,7 @@ public class RequestService {
         dto.setStatus(req.getStatus());
         dto.setCreatedAt(req.getCreatedAt());
         dto.setResolvedAt(req.getResolvedAt());
-    return dto;
+        return dto;
     }
 
     private User getAuthenticatedUser() {
@@ -62,24 +60,34 @@ public class RequestService {
 
     public List<RequestOutDto> getMyRequests() {
         User user = getAuthenticatedUser();
-        return requestRepository.findById(user.getId())
+        return requestRepository.findByUserId(user.getId())
                 .stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public List<RequestOutDto> getRequestsByUserId(Long userId) {
-        return requestRepository.findById(userId)
+        return requestRepository.findByUserId(userId)
                 .stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public List<RequestOutDto> getAll() {
-
-         return requestRepository.findAll()
-                 .stream().map(this::toDto).collect(Collectors.toList());
+        return requestRepository.findAll()
+                .stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public void delete(Long requestId) {
         requestRepository.deleteById(requestId);
     }
 
+    public RequestOutDto updateStatus(long requestId, Request.Status newStatus) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
 
+        request.setStatus(newStatus);
+        if (newStatus != Request.Status.PENDING) {
+            request.setResolvedAt(LocalDateTime.now());
+        }
+
+        Request savedRequest = requestRepository.save(request);
+        return toDto(savedRequest);
+    }
 }

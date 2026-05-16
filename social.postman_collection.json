@@ -1,0 +1,1354 @@
+{
+	"info": {
+		"_postman_id": "d522d706-f2db-4614-8a9c-a692e3a6ddd5",
+		"name": "social",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "53185945",
+		"_collection_link": "https://a28704-4287345.postman.co/workspace/HERMES-(2SIO)-BARRIGA-LONG%C3%A1S's-~42e800b3-aa4c-41cc-827b-b9d925c5f1de/collection/53185945-d522d706-f2db-4614-8a9c-a692e3a6ddd5?action=share&source=collection_link&creator=53185945"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/auth/register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"El cuerpo de la respuesta está vacío\", function () {",
+									"    pm.response.to.have.body(\"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"12345678A\",\n  \"password\": \"adm/inPasrD1#\",\n  \"name\": \"Pedro\",\n  \"lastName\": \"Pérez\",\n  \"email\": \"juan.pez@example.com\",\n  \"phone\": \"600112233\",\n  \"role\": \"ADMIN\",\n  \"birthDate\": \"1992-05-15\",\n  \"active\": true,\n  \"annualSalary\": 35000.50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/register",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"pm.collectionVariables.set(\"token\", response.token);",
+									"",
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"El cuerpo de la respuesta está vacío\", function () {",
+									"    pm.response.to.have.body(\"\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dni\": \"12345678Z\",\n  \"password\": \"a/dminPasrD1#\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/login",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/register (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code is 400\", () => {",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"});",
+									"",
+									"pm.test(\"error response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"code\");",
+									"    pm.expect(jsonResponse).to.have.property(\"title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"    pm.expect(jsonResponse).to.have.property(\"errors\");",
+									"});",
+									"",
+									"pm.test(\"errors message is ok\", () => {",
+									"    pm.expect(jsonResponse.code).eql(400);",
+									"    pm.expect(jsonResponse.title).eql('bad-request');",
+									"    pm.expect(jsonResponse.message).eql('Validation error');",
+									"    pm.expect(jsonResponse.errors.dni).eql('DNI is mandatory'); ",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"adm/indsdsPD1#\",\n  \"name\": \"Miguel\",\n  \"lastName\": \"Pérez\",\n  \"email\": \"jn.pez@example.com\",\n  \"phone\": \"600112233\",\n  \"role\": \"USER\",\n  \"birthDate\": \"1992-05-15\",\n  \"active\": true,\n  \"annualSalary\": 35000.50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/register",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "grants",
+			"item": [
+				{
+					"name": "/grants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code si 201\", () => {",
+									"    pm.expect(pm.response.code).to.eql(201);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"id\");",
+									"    pm.expect(jsonResponse).to.have.property(\"name\");",
+									"    pm.expect(jsonResponse).to.have.property(\"description\");",
+									"    pm.expect(jsonResponse).to.have.property(\"type\");",
+									"    pm.expect(jsonResponse).to.have.property(\"vacancies\");",
+									"    pm.expect(jsonResponse).to.have.property(\"available\");",
+									"    pm.expect(jsonResponse).to.have.property(\"internalCode\");",
+									"    pm.expect(jsonResponse).to.have.property(\"createdAt\");",
+									"});",
+									"",
+									"pm.test(\"data is correct\", () => {",
+									"    pm.expect(jsonResponse.name).to.eql(\"Beca de estudiantes 2026\");",
+									"    pm.expect(jsonResponse.type).to.eql(\"Becas\");",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"grantId\", jsonResponse.id); "
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{name}}\",\n    \"type\": \"{{type}}\",\n    \"description\": \"{{description}}\",\n    \"vacancies\": {{vacancies}},\n    \"internalCode\": \"bc-840-0526\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/grants",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code is 400\", () => {",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"});",
+									"",
+									"pm.test(\"error response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"code\");",
+									"    pm.expect(jsonResponse).to.have.property(\"title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"    pm.expect(jsonResponse).to.have.property(\"errors\");",
+									"});",
+									"",
+									"pm.test(\"errors message is ok\", () => {",
+									"    pm.expect(jsonResponse.code).eql(400);",
+									"    pm.expect(jsonResponse.title).eql('bad-request');",
+									"    pm.expect(jsonResponse.message).eql('Validation error');",
+									"    pm.expect(jsonResponse.errors.name).eql('Name is mandatory'); ",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"{{type}}\",\n    \"description\": \"{{description}}\",\n    \"vacancies\": 30,\n    \"internalCode\": \"bc-840-0526\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/grants",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code si 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"id\");",
+									"    pm.expect(jsonResponse).to.have.property(\"name\");",
+									"    pm.expect(jsonResponse).to.have.property(\"description\");",
+									"    pm.expect(jsonResponse).to.have.property(\"type\");",
+									"    pm.expect(jsonResponse).to.have.property(\"available\");",
+									"    pm.expect(jsonResponse).to.have.property(\"vacancies\");",
+									"    pm.expect(jsonResponse).to.have.property(\"internalCode\");",
+									"    pm.expect(jsonResponse).to.have.property(\"createdAt\");",
+									"});",
+									"",
+									"pm.test(\"vacancies is a number\", () => {",
+									"    pm.expect(pm.response.json().vacancies).to.be.a('number');",
+									"    pm.expect(pm.response.json().available).to.be.a('boolean');",
+									"});",
+									"",
+									"pm.test(\"data has changed\", () => {",
+									"    pm.expect(jsonResponse.available).eql(pm.collectionVariables.get(\"falseBoolean\") === false);",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{name}}\",\n    \"type\": \"{{type}}\",\n    \"description\": \"{{description}}\",\n    \"vacancies\": 0,\n    \"available\": {{falseBoolean}},\n    \"internalCode\": \"bc-840-0526\",\n    \"createdAt\": \"2026-05-15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/grants/{{grantId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants",
+								"{{grantId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code si 201\", () => {",
+									"    pm.expect(pm.response.code).to.eql(201);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"id\");",
+									"    pm.expect(jsonResponse).to.have.property(\"name\");",
+									"    pm.expect(jsonResponse).to.have.property(\"description\");",
+									"    pm.expect(jsonResponse).to.have.property(\"type\");",
+									"    pm.expect(jsonResponse).to.have.property(\"vacancies\");",
+									"    pm.expect(jsonResponse).to.have.property(\"available\");",
+									"    pm.expect(jsonResponse).to.have.property(\"internalCode\");",
+									"    pm.expect(jsonResponse).to.have.property(\"createdAt\");",
+									"});",
+									"",
+									"pm.test(\"data is correct\", () => {",
+									"    pm.expect(jsonResponse.name).to.eql(\"Subvención Digitaliza tu Comercio - Teruel y Huesca\");",
+									"    pm.expect(jsonResponse.type).to.eql(\"Vivienda\");",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"grantId\", jsonResponse.id); "
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Subvención Digitaliza tu Comercio - Teruel y Huesca\",\n    \"type\": \"Vivienda\",\n    \"description\": \"Ayudas para la transformación digital y adquisición de equipamiento tecnológico en comercios de zonas rurales.\",\n    \"vacancies\": 300,\n    \"internalCode\": \"EMP-DIGITAL-RURAL\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/grants",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants/:id (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code is 404\", () => {",
+									"    pm.expect(pm.response.code).to.eql(404);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"code\");",
+									"    pm.expect(jsonResponse).to.have.property(\"title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"    pm.expect(jsonResponse).to.have.property(\"errors\");",
+									"});",
+									"",
+									"pm.test(\"errors message is ok\", () => {",
+									"    pm.expect(jsonResponse.code).eql(404);",
+									"    pm.expect(jsonResponse.title).eql(\"not-found\");",
+									"        pm.expect(jsonResponse.message).eql(\"The grant does not exist\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{name}}\",\n    \"type\": \"{{type}}\",\n    \"description\": \"{{description}}\",\n    \"vacancies\": 500,\n    \"available\": {{falseBoolean}},\n    \"internalCode\": \"bc-840-0526\",\n    \"createdAt\": \"2026-05-15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/grants/35",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"grants",
+								"35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code si 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"id\");",
+									"    pm.expect(jsonResponse).to.have.property(\"name\");",
+									"    pm.expect(jsonResponse).to.have.property(\"description\");",
+									"    pm.expect(jsonResponse).to.have.property(\"type\");",
+									"    pm.expect(jsonResponse).to.have.property(\"vacancies\");",
+									"    pm.expect(jsonResponse).to.have.property(\"available\");",
+									"    pm.expect(jsonResponse).to.have.property(\"internalCode\");",
+									"    pm.expect(jsonResponse).to.have.property(\"createdAt\");",
+									"});",
+									"",
+									"pm.test(\"data is correct\", () => {",
+									"    pm.expect(jsonResponse.name).to.equal(\"Subvención Digitaliza tu Comercio - Teruel y Huesca\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/grants/{{grantId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants",
+								"{{grantId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants/:id (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code is 404\", () => {",
+									"    pm.expect(pm.response.code).to.eql(404);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"code\");",
+									"    pm.expect(jsonResponse).to.have.property(\"title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"    pm.expect(jsonResponse).to.have.property(\"errors\");",
+									"});",
+									"",
+									"pm.test(\"errors message is ok\", () => {",
+									"    pm.expect(jsonResponse.code).eql(404);",
+									"    pm.expect(jsonResponse.title).eql(\"not-found\");",
+									"        pm.expect(jsonResponse.message).eql(\"The grant does not exist\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/grants/500",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants",
+								"500"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code is 200\", () => {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test(\"response has two item\", () => {",
+									"    pm.expect(pm.response.json()).to.have.length(2);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/grants",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code is 204\", () => {",
+									"    pm.expect(pm.response.code).to.eql(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/grants/{{grantId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants",
+								"{{grantId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/grants/:id (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code is 404\", () => {",
+									"    pm.expect(pm.response.code).to.eql(404);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"code\");",
+									"    pm.expect(jsonResponse).to.have.property(\"title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"    pm.expect(jsonResponse).to.have.property(\"errors\");",
+									"});",
+									"",
+									"pm.test(\"errors message is ok\", () => {",
+									"    pm.expect(jsonResponse.code).eql(404);",
+									"    pm.expect(jsonResponse.title).eql(\"not-found\");",
+									"        pm.expect(jsonResponse.message).eql(\"The grant does not exist\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{name}}\",\n    \"type\": \"{{type}}\",\n    \"description\": \"{{description}}\",\n    \"vacancies\": 500,\n    \"available\": {{falseBoolean}},\n    \"internalCode\": \"bc-840-0526\",\n    \"createdAt\": \"2026-05-15\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/grants/{{grantId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"grants",
+								"{{grantId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "/users (v1)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Estructura de datos correcta en el primer usuario de la lista\", () => {",
+									"    const response = pm.response.json();",
+									"",
+									"    pm.expect(response).to.be.an('array').and.to.not.be.empty;",
+									"",
+									"    const firstUser = response[0];",
+									"    pm.expect(firstUser).to.have.property('id');",
+									"    pm.expect(firstUser).to.have.property('dni');",
+									"    pm.expect(firstUser).to.have.property('password');",
+									"    pm.expect(firstUser).to.have.property('email');",
+									"    pm.expect(firstUser).to.have.property('name');",
+									"    pm.expect(firstUser).to.have.property('lastName');",
+									"    pm.expect(firstUser).to.have.property('phone');",
+									"    pm.expect(firstUser).to.have.property('annualSalary');",
+									"    pm.expect(firstUser).to.have.property('active');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users (v2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Retorna una lista de usuarios (DTO)\", function () {",
+									"    var response = pm.response.json();",
+									"    pm.expect(response).to.be.an('array')",
+									"    ",
+									"    if(response.length > 0) {",
+									"        var userId = response[0].id;",
+									"        pm.collectionVariables.set(\"userId\", userId);",
+									"        pm.expect(response[0]).to.not.have.property(\"password\");",
+									"        pm.expect(response[0]).to.have.property(\"dni\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v2/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:id (v1)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Estructura de datos correcta en el cuerpo de la respuesta\", () => {",
+									"    const response = pm.response.json();",
+									"    ",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response).to.have.property('dni');",
+									"    pm.expect(response).to.have.property('password');",
+									"    pm.expect(response).to.have.property('email');",
+									"    pm.expect(response).to.have.property('name');",
+									"    pm.expect(response).to.have.property('lastName');",
+									"    pm.expect(response).to.have.property('phone');",
+									"    pm.expect(response).to.have.property('annualSalary');",
+									"    pm.expect(response).to.have.property('active');",
+									"    ",
+									" ",
+									"});",
+									"",
+									"",
+									"pm.test(\"Numero de campos correcto\", () => {",
+									"    const response = pm.response.json();",
+									"    const numCampos = Object.keys(response).length;",
+									"    ",
+									"    pm.expect(numCampos).to.equal(18); ",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/user/{{userId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:id (v2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Estructura de datos correcta en el cuerpo de la respuesta\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('dni');",
+									"    pm.expect(response).to.have.property('email');",
+									"    pm.expect(response).to.have.property('name');",
+									"    pm.expect(response).to.have.property('lastName');",
+									"    pm.expect(response).to.have.property('phone');",
+									"    pm.expect(response).to.have.property('annualSalary');",
+									"    pm.expect(response).to.have.property('birthDate');",
+									"",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v2/user/{{userId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v2",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:id (v1)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Estructura correcta\", () => {",
+									"    const response = pm.response.json();",
+									"    ",
+									"",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response).to.have.property('dni');",
+									"    pm.expect(response).to.have.property('password');",
+									"    pm.expect(response).to.have.property('email');",
+									"    pm.expect(response).to.have.property('phone');",
+									"    pm.expect(response).to.have.property('role');",
+									"    pm.expect(response).to.have.property('active');",
+									"    pm.expect(response).to.have.property('birthDate');",
+									"    pm.expect(response).to.have.property('createdAt');",
+									"    pm.expect(response).to.have.property('annualSalary');",
+									"});",
+									"",
+									"pm.test(\"Los datos se han actualizado correctamente\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.active).to.eql(true);",
+									"    pm.expect(response.name).to.eql(\"Pedro\");",
+									"    pm.expect(response.annualSalary).to.eq(99999.99) ",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"{{userDni}}\",\n  \"password\": \"{{userPassword}}\",\n  \"name\": \"{{userName}}\",\n  \"lastName\": \"{{userLastName}}\",\n  \"email\": \"{{userEmail}}\",\n  \"phone\": \"{{userPhone}}\",\n  \"role\": \"{{userRole}}\",\n  \"birthDate\": \"{{userBirthDate}}\",\n  \"active\": {{userActive}},\n  \"annualSalary\": 99999.99\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/user/{{userId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:id (v1)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 204, No Content \", () => {",
+									"    pm.expect(pm.response.code).to.be.eql(204);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/users/{{userId}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:id (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code is 404\", () => {",
+									"    pm.expect(pm.response.code).to.eql(404);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"code\");",
+									"    pm.expect(jsonResponse).to.have.property(\"title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"    pm.expect(jsonResponse).to.have.property(\"errors\");",
+									"});",
+									"",
+									"pm.test(\"errors message is ok\", () => {",
+									"    pm.expect(jsonResponse.code).eql(404);",
+									"    pm.expect(jsonResponse.title).eql(\"not-found\");",
+									"        pm.expect(jsonResponse.message).eql(\"The user does not exist\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Subvención Digitaliza tu Comercio - Teruel y Huesca\",\n    \"type\": \"Vivienda\",\n    \"description\": \"Ayudas para la transformación digital y adquisición de equipamiento tecnológico en comercios de zonas rurales.\",\n    \"vacancies\": 300,\n    \"internalCode\": \"EMP-DIGITAL-RURAL\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/users/4041",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"4041"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:id (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"status code is 404\", () => {",
+									"    pm.expect(pm.response.code).to.eql(404);",
+									"});",
+									"",
+									"pm.test(\"response structure is ok\", () => {",
+									"    pm.expect(jsonResponse).to.have.property(\"code\");",
+									"    pm.expect(jsonResponse).to.have.property(\"title\");",
+									"    pm.expect(jsonResponse).to.have.property(\"message\");",
+									"    pm.expect(jsonResponse).to.have.property(\"errors\");",
+									"});",
+									"",
+									"pm.test(\"errors message is ok\", () => {",
+									"    pm.expect(jsonResponse.code).eql(404);",
+									"    pm.expect(jsonResponse.title).eql(\"not-found\");",
+									"        pm.expect(jsonResponse.message).eql(\"The user does not exist\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/v1/users/4041",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"4041"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": null
+		},
+		{
+			"key": "locationId",
+			"value": 2
+		},
+		{
+			"key": "grantId",
+			"value": null
+		},
+		{
+			"key": "name",
+			"value": "Beca de estudiantes 2026"
+		},
+		{
+			"key": "type",
+			"value": "Becas"
+		},
+		{
+			"key": "description",
+			"value": "Beca destinada a los estudiantes aragoneses con bajos recursos"
+		},
+		{
+			"key": "vacancies",
+			"value": "840"
+		},
+		{
+			"key": "falseBoolean",
+			"value": "false"
+		},
+		{
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": null
+		}
+	]
+}

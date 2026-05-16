@@ -1,0 +1,151 @@
+openapi: 3.0.1
+info:
+  description: API acerca del Sistema de Ayudas Sociales
+  title: sasApp
+  version: 1.0.0
+servers:
+- url: http://sasApp.com/api
+paths:
+  /v1/grants:
+    get:
+      description: |
+        Se muestra una lista completa de todas las ayudas sociales facilitadas por el gobierno.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Grant'
+                type: array
+          description: OK
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal server error
+      summary: Lista de ayudas
+      x-accepts:
+      - application/json
+    post:
+      description: Acción que permite registrar ayuda social.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantInDto'
+        description: Datos de la nueva ayuda social
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grant'
+          description: Ayuda social registrada
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: Bad request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+          description: Internal server error
+      summary: Registrar ayuda
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    GrantInDto:
+      example:
+        name: Bono Alquiler Joven Aragón 2026
+        type: Vivienda
+        description: Ayuda directa para el pago del alquiler dirigida a jóvenes menores
+          de 35 años empadronados en la comunidad autónoma.
+        vacancies: 290
+        internalCode: VIV-ALQJOVEN-26
+      properties:
+        name:
+          description: Nombre de la ayuda social
+          type: string
+        type:
+          description: Tipo de ayuda social
+          type: string
+        description:
+          description: Información detallada acerca de la ayuda social
+          type: string
+        vacancies:
+          description: Número de ayudas disponibles
+          format: int32
+          type: number
+        internalCode:
+          description: Código de referencia interno
+          type: string
+      type: object
+    Grant:
+      allOf:
+      - $ref: '#/components/schemas/GrantInDto'
+      example:
+        id: 1
+        name: Bono Alquiler Joven Aragón 2026
+        type: Vivienda
+        description: Ayuda directa para el pago del alquiler dirigida a jóvenes menores
+          de 35 años empadronados en la comunidad autónoma.
+        vacancies: 290
+        internalCode: VIV-ALQJOVEN-26
+        available: true
+        createdAt: 2026-05-12
+      properties:
+        id:
+          description: Identificador de ayuda social
+          format: int64
+          type: number
+        available:
+          default: true
+          description: Indicador de si quedan ayudas disponibles
+          type: boolean
+        createdAt:
+          description: Día de creación de la ayuda
+          format: date
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        code:
+          description: Código de estado
+          format: int
+          type: number
+        message:
+          description: Mensaje de error
+          type: string
+        title:
+          description: Tipo de error
+          type: string
+      type: object
+    InternalServerError:
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 500
+        message: Internal Server Error
+        title: internal-server-error
+    BadRequest:
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 400
+        message: Validation Error
+        title: bad-request
+    NotFound:
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 404
+        message: Not Found Error
+        title: not-found
+

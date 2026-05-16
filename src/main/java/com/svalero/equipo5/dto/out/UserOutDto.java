@@ -24,6 +24,7 @@ public class UserOutDto {
     private LocalDate birthDate;
     private Float annualSalary;
     private boolean active;
+    private String role;
 
     @JsonBackReference
     private List<Request> grantRequests;

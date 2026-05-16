@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,6 +47,7 @@ public class AuthService {
                 .birthDate(registerInDto.getBirthDate())
                 .active(true)
                 .annualSalary(registerInDto.getAnnualSalary())
+                .createdAt(LocalDateTime.now())
                 .build();
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);

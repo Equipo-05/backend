@@ -54,10 +54,18 @@ public class UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
+        String currentPassword = existingUser.getPassword();
+
         modelMapper.map(user, existingUser);
         existingUser.setId(id);
-        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        return  userRepository.save(existingUser);
+
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            existingUser.setPassword(currentPassword);
+        }
+
+        return userRepository.save(existingUser);
     }
 
     public void deleteUser(long id) throws UserNotFoundException {

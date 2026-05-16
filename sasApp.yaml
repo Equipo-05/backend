@@ -1,0 +1,199 @@
+openapi: 3.0.1
+info:
+  title: sasApp
+  description: API acerca del Sistema de Ayudas Sociales
+  version: 1.0.0
+servers:
+  - url: 'http://sasApp.com/api'
+paths:
+  /v1/grants:
+    get:
+      summary: Lista de ayudas
+      description: |
+        Se muestra una lista completa de todas las ayudas sociales facilitadas por el gobierno.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Grant'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      summary: Registrar ayuda
+      description: Acción que permite registrar ayuda social.
+      requestBody:
+        description: Datos de la nueva ayuda social
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantInDto'
+      responses:
+        '201':
+          description: Ayuda social registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grant'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      summary: Modificar ayuda social
+      description: Método que permite modificar la ayuda social seleccionada
+      requestBody:
+        description: Los datos de la neuva ayuda social son los que sobreescribiremos sobre la antigua.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantModifyInDto'
+      responses:
+        '200':
+          description: Ayuda social modificada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grant'
+        '404':
+          description: Not Found Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      summary: Borrar ayuda social
+      description: Permite eliminar la ayuda social seleccionada por id
+      responses:
+        '204':
+          description: Ayuda social eliminada de la base de datos
+        '404':
+          description: Not Found Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+components:
+  schemas:
+    GrantInDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la ayuda social
+        type:
+          type: string
+          description: Tipo de ayuda social
+        description:
+          type: string
+          description: Información detallada acerca de la ayuda social
+        vacancies:
+          type: number
+          format: int32
+          description: Número de ayudas disponibles
+        internalCode:
+          type: string
+          description: Código de referencia interno
+      example:
+        name: Bono Alquiler Joven Aragón 2026
+        type: Vivienda
+        description: Ayuda directa para el pago del alquiler dirigida a jóvenes menores de 35 años empadronados en la comunidad autónoma.
+        vacancies: 290
+        internalCode: VIV-ALQJOVEN-26
+    Grant:
+      allOf:
+        - $ref: '#/components/schemas/GrantModifyInDto'
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          description: Identificador de ayuda social
+      example:
+        id: 1
+        name: Bono Alquiler Joven Aragón 2026
+        type: Vivienda
+        description: Ayuda directa para el pago del alquiler dirigida a jóvenes menores de 35 años empadronados en la comunidad autónoma.
+        vacancies: 290
+        internalCode: VIV-ALQJOVEN-26
+    GrantModifyInDto:
+      allOf:
+        - $ref: '#/components/schemas/GrantInDto'
+      type: object
+      properties:
+        available:
+          type: boolean
+          default: true
+          description: Indicador de si quedan ayudas disponibles
+        createdAt:
+          type: string
+          format: date
+          description: Día de creación de la ayuda
+      example:
+        name: Bono Alquiler Joven Aragón 2026
+        type: Vivienda
+        description: Ayuda directa para el pago del alquiler dirigida a jóvenes menores de 35 años empadronados en la comunidad autónoma.
+        vacancies: 290
+        internalCode: VIV-ALQJOVEN-26
+        available: true
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          format: int
+          description: Código de estado
+        message:
+          type: string
+          description: Mensaje de error
+        title:
+          type: string
+          description: Tipo de error
+    InternalServerError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 500
+        message: Internal Server Error
+        title: internal-server-error
+    BadRequest:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 400
+        message: Validation Error
+        title: bad-request
+    NotFound:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 404
+        message: Not Found Error
+        title: not-found

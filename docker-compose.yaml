@@ -27,15 +27,20 @@ services:
       sasApp-db:
         condition: service_healthy
     environment:
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_APPLICATION_JSON: '{
-      "spring.application.name": "sasApp",
-      "server.port": "8086",
-      "spring.jpa.hibernate.ddl-auto": "update",
-      "spring.jpa.properties.hibernate.globally_quoted_identifiers":"true",
-      "spring.datasource.url": "jdbc:mariadb://sasApp-db:3306/sasApp_database",
-      "spring.datasource.username": "sasApp_user",
-      "spring.datasource.password": "sasApp_password",
-      "spring.jpa.database-platform": "org.hibernate.dialect.MariaDBDialect"
+    "spring.application.name": "sasApp",
+        "server.port": "8086",
+        "spring.datasource.url": "jdbc:mariadb://sasApp-db:3306/sasApp_database",
+        "spring.datasource.username": "sasApp_user",
+        "spring.datasource.password": "sasApp_password",
+        "spring.jpa.database-platform": "org.hibernate.dialect.MariaDBDialect",
+        "application.security.jwt.secret-key": "PracticasPResencialesMayo2026SocialAssistanceServiceApplication",
+        "application.security.jwt.expiration": 86400000,
+        "application.security.jwt.refresh-token.expiration": 604800000,
+        "spring.jpa.show-sql": true,
+        "spring.jpa.properties.hibernate.format_sql": true,
+        "logging.level.org.springframework": "DEBUG"
       }'
     networks:
       - network-sasApp
